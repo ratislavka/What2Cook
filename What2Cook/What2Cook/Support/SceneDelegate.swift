@@ -13,17 +13,70 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-
         guard let windowScene = (scene as? UIWindowScene) else { return }
+        
+        let navBarAppearance = UINavigationBarAppearance()
+        navBarAppearance.configureWithOpaqueBackground()
+        navBarAppearance.backgroundColor = .systemBackground
+        navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.label]
+        navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.label]
 
-        window = UIWindow(frame: windowScene.coordinateSpace.bounds)
-        window?.windowScene = windowScene
+        UINavigationBar.appearance().standardAppearance = navBarAppearance
+        UINavigationBar.appearance().scrollEdgeAppearance = navBarAppearance
+        UINavigationBar.appearance().tintColor = .systemOrange
+        
+        window = UIWindow(windowScene: windowScene)
+//        UserDefaultsManager.shared.hasCompletedOnboarding = false
+        
+        if UserDefaultsManager.shared.hasCompletedOnboarding {
+            window?.rootViewController = createTabBarController()
+        }
+        else {
+            let helloVC = HelloVC()
+            let navController = UINavigationController(rootViewController: helloVC)
+            navController.setNavigationBarHidden(true, animated: false) // Hide nav bar for onboarding
+            window?.rootViewController = navController
+            
+        }
 
-        let vc = UIViewController()
-        vc.view.backgroundColor = .systemBlue
-        window?.rootViewController = vc
         window?.makeKeyAndVisible()
     }
+    
+    func createTabBarController() -> UITabBarController {
+        let tabBarController = UITabBarController()
+        
+        let homeVC = HomeVC()
+        homeVC.title = "Home"
+        let homeNav = UINavigationController(rootViewController: homeVC)
+        homeNav.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house"), tag: 0)
+        
+        let fridgeVC = FridgeVC()
+        fridgeVC.title = "Fridge"
+        let fridgeNav = UINavigationController(rootViewController: fridgeVC)
+        fridgeNav.tabBarItem = UITabBarItem(title: "Fridge", image: UIImage(systemName: "refrigerator"), tag: 1)
+
+//        let familyVC = FamilyVC()
+//        familyVC.title = "Family"
+//        let familyNav = UINavigationController(rootViewController: familyVC)
+//        familyNav.tabBarItem = UITabBarItem(title: "Family", image: UIImage(systemName: "person.3"), tag: 2)
+     
+        let helpVC = HelpVC()
+        helpVC.title = "Help"
+        let HelpNav = UINavigationController(rootViewController: helpVC)
+        HelpNav.tabBarItem = UITabBarItem(title: "Help", image: UIImage(systemName: "questionmark.circle"), tag: 3)
+     
+        let profileVC = ProfileVC()
+        profileVC.title = "Profile"
+        let profileNav = UINavigationController(rootViewController: profileVC)
+        profileNav.tabBarItem = UITabBarItem(title: "Profile", image: UIImage(systemName: "person.circle"), tag: 4)
+     
+//        tabBarController.viewControllers = [homeNav, fridgeNav, familyNav, HelpNav, profileNav]
+        tabBarController.viewControllers = [homeNav, fridgeNav, HelpNav, profileNav]
+        tabBarController.tabBar.tintColor = .systemOrange
+        
+        return tabBarController
+    }
+    
     
     func sceneDidDisconnect(_ scene: UIScene) {
         // Called as the scene is being released by the system.

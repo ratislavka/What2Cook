@@ -10,16 +10,19 @@ import UIKit
 
 
 class WTButton: UIButton {
+    
+    private var cornerStyle: CornerStyle = .squared
 
     override init(frame: CGRect) {
         super.init(frame: frame)
         configure()
      }
     
-    init(backgroundColor: UIColor, title: String){
+    init(backgroundColor: UIColor, title: String, cornerStyle: CornerStyle){
         super.init(frame: .zero)
         self.backgroundColor = backgroundColor
         self.setTitle(title, for: .normal)
+        self.cornerStyle = cornerStyle
         configure()
     }
     
@@ -28,11 +31,22 @@ class WTButton: UIButton {
     }
     
     private func configure() {
-        layer.cornerRadius = 10
+        switch cornerStyle {
+        case .rounded:
+            layer.cornerRadius = 25
+        case .squared:
+            layer.cornerRadius = 10
+        }
+            
         setTitleColor(.white, for: .normal)
         titleLabel?.font = UIFont.preferredFont(forTextStyle: .headline)
         translatesAutoresizingMaskIntoConstraints = false
 
     }
 
+}
+
+enum CornerStyle {
+    case rounded
+    case squared
 }

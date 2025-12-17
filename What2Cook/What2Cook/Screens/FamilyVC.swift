@@ -11,6 +11,9 @@ class FamilyVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.largeTitleDisplayMode = .always
 
         // Do any additional setup after loading the view.
     }

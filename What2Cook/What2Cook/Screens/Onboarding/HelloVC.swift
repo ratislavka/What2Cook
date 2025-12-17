@@ -12,12 +12,14 @@ import Lottie
 class HelloVC: UIViewController {
 
     private let helloAnim = LottieAnimationView(name: "Hello-Anim")
-    private let secondaryTextLabel = UILabel()
-    private let gotItButton = WTButton(backgroundColor: .systemOrange, title: "Got it!")
+    private let secondaryTextLabel = WTTitleLabel(textAlignment: .center, fontSize: 20)
+    private let gotItButton = WTButton(backgroundColor: .systemOrange, title: "Got it!", cornerStyle: .rounded)
             
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+
         
         view.backgroundColor = .systemBackground
 
@@ -46,14 +48,18 @@ class HelloVC: UIViewController {
     
     
     private func configureSecondaryLabel() {
-        secondaryTextLabel.text = "test"
-        secondaryTextLabel.textAlignment = .center
+        secondaryTextLabel.text =
+        """
+        What2Cook will help you answer
+        the question, “What to cook today?”  
+        """
+        secondaryTextLabel.numberOfLines = 0
         secondaryTextLabel.translatesAutoresizingMaskIntoConstraints = false
         
         view.addSubview(secondaryTextLabel)
         
         NSLayoutConstraint.activate([
-            secondaryTextLabel.topAnchor.constraint(equalTo: helloAnim.bottomAnchor, constant: 15),
+            secondaryTextLabel.topAnchor.constraint(equalTo: helloAnim.bottomAnchor, constant: -90),
             secondaryTextLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
     }
@@ -62,15 +68,20 @@ class HelloVC: UIViewController {
     private func configureGotItButton() {
         view.addSubview(gotItButton)
         
+        gotItButton.addTarget(self, action: #selector(nextVC), for: .touchUpInside)
+        
         NSLayoutConstraint.activate([
             gotItButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50),
-            gotItButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
-            gotItButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
+            gotItButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
+            gotItButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
             gotItButton.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
-    
-    
+
+    @objc func nextVC() {
+        let vc = DescriptionVC()
+        navigationController?.pushViewController(vc, animated: true)
+    }
     
     
 //
